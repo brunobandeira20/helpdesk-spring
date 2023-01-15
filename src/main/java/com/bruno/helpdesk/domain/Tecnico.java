@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.bruno.helpdesk.domain.enums.Perfil;
+
 @Entity
 public class Tecnico extends Pessoa {
 
@@ -16,10 +18,12 @@ public class Tecnico extends Pessoa {
 
 	public Tecnico() {
 		super();
+		addtPerfis(Perfil.TECNICO);
 	}
 
 	public Tecnico(Integer id, String nome, String cpf, String email, String senha) {
 		super(id, nome, cpf, email, senha);
+		addtPerfis(Perfil.TECNICO);
 	}
 
 	public List<Chamado> getChamados() {
