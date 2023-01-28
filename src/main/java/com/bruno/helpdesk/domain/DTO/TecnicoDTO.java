@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import com.bruno.helpdesk.domain.Tecnico;
 import com.bruno.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 
 public class TecnicoDTO implements Serializable {
 
@@ -30,6 +29,7 @@ public class TecnicoDTO implements Serializable {
 
 	public TecnicoDTO() {
 		super();
+		setPerfis(Perfil.TECNICO);
 	}
 
 	public TecnicoDTO(Tecnico obj) {
@@ -41,6 +41,7 @@ public class TecnicoDTO implements Serializable {
 		this.senha = obj.getSenha();
 		this.perfis = obj.getPerfis().stream().map(x -> x.getId()).collect(Collectors.toSet());
 		this.dataCriacao = obj.getDataCriacao();
+		setPerfis(Perfil.TECNICO);
 	}
 
 	public Integer getId() {
