@@ -21,16 +21,16 @@ public class TecnicoService {
 
 	@Autowired
 	private TecnicoRepository tecnicoRepository;
-	
+
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
+
 	public Tecnico findById(Integer id) {
 		Optional<Tecnico> obj = tecnicoRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("OBJETO NÃO ENCONTRADO! ID: " + id));
 	}
-	
-	public List<Tecnico> findAll(){
+
+	public List<Tecnico> findAll() {
 		return tecnicoRepository.findAll();
 	}
 
@@ -40,7 +40,7 @@ public class TecnicoService {
 		Tecnico tecnico = new Tecnico(objDTO);
 		return tecnicoRepository.save(tecnico);
 	}
-	
+
 	public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
 		objDTO.setId(id);
 		Tecnico oldObj = findById(id);
@@ -49,17 +49,26 @@ public class TecnicoService {
 		return tecnicoRepository.save(oldObj);
 	}
 
+	public void delete(Integer id) {
+		Tecnico obj = findById(id);
+		if(obj.getChamados().size() > 0) {
+			throw new DataIntegrityViolationException("Tecnico possui ordens de servico e não pode ser deletado!");
+		}
+		tecnicoRepository.deleteById(id);
+	}
+
 	private void validaCpfEmail(TecnicoDTO objDTO) {
 		List<Optional<Pessoa>> obj = pessoaRepository.findByCpfEmail(objDTO.getCpf(), objDTO.getEmail());
-		for(Optional<Pessoa> pessoa : obj) {
-			if(pessoa.isPresent() && objDTO.getCpf().contains(pessoa.get().getCpf()) && pessoa.get().getId() != objDTO.getId()) {
+		for (Optional<Pessoa> pessoa : obj) {
+			if (pessoa.isPresent() && objDTO.getCpf().contains(pessoa.get().getCpf())
+					&& pessoa.get().getId() != objDTO.getId()) {
 				throw new DataIntegrityViolationException("CPF já cadastrado!");
 			}
-			if(pessoa.isPresent() && objDTO.getEmail().contains(pessoa.get().getEmail()) && pessoa.get().getId() != objDTO.getId()) {
+			if (pessoa.isPresent() && objDTO.getEmail().contains(pessoa.get().getEmail())
+					&& pessoa.get().getId() != objDTO.getId()) {
 				throw new DataIntegrityViolationException("Email já cadastrado!");
 			}
 		}
 	}
-
 
 }

@@ -16,8 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import com.bruno.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
