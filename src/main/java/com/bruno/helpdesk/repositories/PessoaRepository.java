@@ -13,4 +13,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Integer>{
 	@Query("SELECT obj FROM Pessoa obj WHERE obj.cpf = :cpf OR obj.email = :email")
 	List<Optional<Pessoa>> findByCpfEmail(String cpf, String email);
 	
+	Optional<Pessoa> findByEmail(String email);
+	
 }
